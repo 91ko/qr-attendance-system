@@ -188,7 +188,7 @@ export default function StatsPage() {
   return (
     <div style={{ 
       minHeight: '100vh', 
-      padding: '20px',
+      padding: '15px',
       fontFamily: 'Arial, sans-serif',
       backgroundColor: '#f5f5f5'
     }}>
@@ -196,31 +196,41 @@ export default function StatsPage() {
         maxWidth: '1200px',
         margin: '0 auto',
         background: 'white',
-        padding: '30px',
+        padding: '20px',
         borderRadius: '10px',
         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
       }}>
         <h1 style={{ 
           color: '#333', 
-          marginBottom: '30px',
-          textAlign: 'center'
+          marginBottom: '25px',
+          textAlign: 'center',
+          fontSize: '20px'
         }}>
           근무 통계 대시보드
         </h1>
         
         {/* 뷰 모드 선택 */}
         <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-          <div style={{ display: 'inline-flex', background: '#f8f9fa', borderRadius: '5px', padding: '2px' }}>
+          <div style={{ 
+            display: 'inline-flex', 
+            background: '#f8f9fa', 
+            borderRadius: '5px', 
+            padding: '2px',
+            width: '100%',
+            maxWidth: '300px'
+          }}>
             <button
               type="button"
               onClick={() => setViewMode('dashboard')}
               style={{
-                padding: '8px 16px',
+                flex: 1,
+                padding: '8px 12px',
                 border: 'none',
                 borderRadius: '3px',
                 background: viewMode === 'dashboard' ? '#007bff' : 'transparent',
                 color: viewMode === 'dashboard' ? 'white' : '#333',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                fontSize: '13px'
               }}
             >
               대시보드
@@ -229,12 +239,14 @@ export default function StatsPage() {
               type="button"
               onClick={() => setViewMode('search')}
               style={{
-                padding: '8px 16px',
+                flex: 1,
+                padding: '8px 12px',
                 border: 'none',
                 borderRadius: '3px',
                 background: viewMode === 'search' ? '#007bff' : 'transparent',
                 color: viewMode === 'search' ? 'white' : '#333',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                fontSize: '13px'
               }}
             >
               개인 통계 검색
@@ -249,12 +261,12 @@ export default function StatsPage() {
             <div style={{ marginBottom: '20px', textAlign: 'center' }}>
               <h2 style={{ 
                 color: '#007bff', 
-                marginBottom: '10px',
-                fontSize: '20px'
+                marginBottom: '8px',
+                fontSize: '18px'
               }}>
                 📅 {todayDisplay}
               </h2>
-              <p style={{ color: '#666', fontSize: '14px' }}>
+              <p style={{ color: '#666', fontSize: '13px' }}>
                 오늘의 출퇴근 현황
               </p>
             </div>
@@ -264,7 +276,7 @@ export default function StatsPage() {
               <div style={{ 
                 marginBottom: '20px', 
                 textAlign: 'center',
-                padding: '15px',
+                padding: '12px',
                 background: '#e8f5e8',
                 borderRadius: '8px',
                 border: '2px solid #28a745'
@@ -272,12 +284,12 @@ export default function StatsPage() {
                 <h3 style={{ 
                   color: '#28a745', 
                   marginBottom: '5px',
-                  fontSize: '18px'
+                  fontSize: '16px'
                 }}>
                   💰 오늘 총 급여
                 </h3>
                 <p style={{ 
-                  fontSize: '24px', 
+                  fontSize: '20px', 
                   fontWeight: 'bold',
                   color: '#155724',
                   margin: 0
@@ -289,43 +301,48 @@ export default function StatsPage() {
 
             {/* 출퇴근 세션 */}
             <div>
-              <h2 style={{ color: '#333', marginBottom: '15px' }}>출퇴근 기록</h2>
+              <h2 style={{ color: '#333', marginBottom: '15px', fontSize: '16px' }}>출퇴근 기록</h2>
               <div style={{
                 border: '1px solid #ddd',
                 borderRadius: '5px',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                overflowX: 'auto'
               }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <table style={{ 
+                  width: '100%', 
+                  borderCollapse: 'collapse',
+                  minWidth: '600px'
+                }}>
                   <thead>
                     <tr style={{ background: '#f8f9fa' }}>
-                      <th style={{ padding: '12px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>이름</th>
-                      <th style={{ padding: '12px', textAlign: 'center', borderBottom: '1px solid #ddd' }}>출근시간</th>
-                      <th style={{ padding: '12px', textAlign: 'center', borderBottom: '1px solid #ddd' }}>퇴근시간</th>
-                      <th style={{ padding: '12px', textAlign: 'center', borderBottom: '1px solid #ddd' }}>근무시간</th>
-                      <th style={{ padding: '12px', textAlign: 'right', borderBottom: '1px solid #ddd' }}>급여</th>
-                      <th style={{ padding: '12px', textAlign: 'center', borderBottom: '1px solid #ddd' }}>상태</th>
-                      <th style={{ padding: '12px', textAlign: 'center', borderBottom: '1px solid #ddd' }}>관리</th>
+                      <th style={{ padding: '10px', textAlign: 'left', borderBottom: '1px solid #ddd', fontSize: '13px' }}>이름</th>
+                      <th style={{ padding: '10px', textAlign: 'center', borderBottom: '1px solid #ddd', fontSize: '13px' }}>출근시간</th>
+                      <th style={{ padding: '10px', textAlign: 'center', borderBottom: '1px solid #ddd', fontSize: '13px' }}>퇴근시간</th>
+                      <th style={{ padding: '10px', textAlign: 'center', borderBottom: '1px solid #ddd', fontSize: '13px' }}>근무시간</th>
+                      <th style={{ padding: '10px', textAlign: 'right', borderBottom: '1px solid #ddd', fontSize: '13px' }}>급여</th>
+                      <th style={{ padding: '10px', textAlign: 'center', borderBottom: '1px solid #ddd', fontSize: '13px' }}>상태</th>
+                      <th style={{ padding: '10px', textAlign: 'center', borderBottom: '1px solid #ddd', fontSize: '13px' }}>관리</th>
                     </tr>
                   </thead>
                   <tbody>
                     {attendanceSessions.length > 0 ? (
                       attendanceSessions.map((session) => (
                         <tr key={session.employee_id} style={{ borderBottom: '1px solid #eee' }}>
-                          <td style={{ padding: '12px' }}>{session.name}</td>
-                          <td style={{ padding: '12px', textAlign: 'center' }}>
+                          <td style={{ padding: '10px', fontSize: '13px' }}>{session.name}</td>
+                          <td style={{ padding: '10px', textAlign: 'center', fontSize: '13px' }}>
                             {session.check_in ? formatTime(session.check_in) : '-'}
                           </td>
-                          <td style={{ padding: '12px', textAlign: 'center' }}>
+                          <td style={{ padding: '10px', textAlign: 'center', fontSize: '13px' }}>
                             {session.check_out ? formatTime(session.check_out) : '-'}
                           </td>
-                          <td style={{ padding: '12px', textAlign: 'center' }}>
+                          <td style={{ padding: '10px', textAlign: 'center', fontSize: '13px' }}>
                             {session.work_hours !== null ? (
                               <span style={{ fontWeight: 'bold' }}>
                                 {session.work_hours}시간 {session.work_minutes % 60}분
                               </span>
                             ) : '-'}
                           </td>
-                          <td style={{ padding: '12px', textAlign: 'right' }}>
+                          <td style={{ padding: '10px', textAlign: 'right', fontSize: '13px' }}>
                             {session.wage ? (
                               <span style={{ 
                                 fontWeight: 'bold',
@@ -336,24 +353,25 @@ export default function StatsPage() {
                             ) : '-'}
                           </td>
                           <td style={{ 
-                            padding: '12px', 
+                            padding: '10px', 
                             textAlign: 'center',
                             color: getStatusColor(session),
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
+                            fontSize: '13px'
                           }}>
                             {getStatusText(session)}
                           </td>
-                          <td style={{ padding: '12px', textAlign: 'center' }}>
+                          <td style={{ padding: '10px', textAlign: 'center' }}>
                             <button
                               onClick={() => handleDeleteSession(session.employee_id, session.name)}
                               disabled={deletingSession === session.employee_id}
                               style={{
-                                padding: '6px 12px',
+                                padding: '4px 8px',
                                 background: '#dc3545',
                                 color: 'white',
                                 border: 'none',
                                 borderRadius: '3px',
-                                fontSize: '12px',
+                                fontSize: '11px',
                                 cursor: deletingSession === session.employee_id ? 'not-allowed' : 'pointer',
                                 opacity: deletingSession === session.employee_id ? 0.6 : 1
                               }}
@@ -365,7 +383,7 @@ export default function StatsPage() {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan={7} style={{ padding: '20px', textAlign: 'center', color: '#666' }}>
+                        <td colSpan={7} style={{ padding: '20px', textAlign: 'center', color: '#666', fontSize: '13px' }}>
                           오늘의 출퇴근 기록이 없습니다.
                         </td>
                       </tr>
@@ -380,17 +398,26 @@ export default function StatsPage() {
           <div>
             {/* 검색 모드 선택 */}
             <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-              <div style={{ display: 'inline-flex', background: '#f8f9fa', borderRadius: '5px', padding: '2px' }}>
+              <div style={{ 
+                display: 'inline-flex', 
+                background: '#f8f9fa', 
+                borderRadius: '5px', 
+                padding: '2px',
+                width: '100%',
+                maxWidth: '400px'
+              }}>
                 <button
                   type="button"
                   onClick={() => setSearchMode('name')}
                   style={{
-                    padding: '8px 16px',
+                    flex: 1,
+                    padding: '8px 12px',
                     border: 'none',
                     borderRadius: '3px',
                     background: searchMode === 'name' ? '#007bff' : 'transparent',
                     color: searchMode === 'name' ? 'white' : '#333',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    fontSize: '13px'
                   }}
                 >
                   이름으로 검색
@@ -399,12 +426,14 @@ export default function StatsPage() {
                   type="button"
                   onClick={() => setSearchMode('phone')}
                   style={{
-                    padding: '8px 16px',
+                    flex: 1,
+                    padding: '8px 12px',
                     border: 'none',
                     borderRadius: '3px',
                     background: searchMode === 'phone' ? '#007bff' : 'transparent',
                     color: searchMode === 'phone' ? 'white' : '#333',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    fontSize: '13px'
                   }}
                 >
                   이름+전화번호로 검색
@@ -413,13 +442,19 @@ export default function StatsPage() {
             </div>
             
             <form onSubmit={handleSubmit}>
-              <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
-                <div style={{ flex: 1 }}>
+              <div style={{ 
+                display: 'flex', 
+                gap: '15px', 
+                marginBottom: '20px',
+                flexDirection: 'column'
+              }}>
+                <div>
                   <label style={{
                     display: 'block',
                     marginBottom: '5px',
                     color: '#333',
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
+                    fontSize: '13px'
                   }}>
                     이름
                   </label>
@@ -441,12 +476,13 @@ export default function StatsPage() {
                 </div>
                 
                 {searchMode === 'phone' && (
-                  <div style={{ flex: 1 }}>
+                  <div>
                     <label style={{
                       display: 'block',
                       marginBottom: '5px',
                       color: '#333',
-                      fontWeight: 'bold'
+                      fontWeight: 'bold',
+                      fontSize: '13px'
                     }}>
                       휴대폰 번호
                     </label>
@@ -468,12 +504,13 @@ export default function StatsPage() {
                   </div>
                 )}
                 
-                <div style={{ flex: 1 }}>
+                <div>
                   <label style={{
                     display: 'block',
                     marginBottom: '5px',
                     color: '#333',
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
+                    fontSize: '13px'
                   }}>
                     년월
                   </label>
@@ -496,12 +533,13 @@ export default function StatsPage() {
               
               {error && (
                 <div style={{
-                  padding: '12px',
+                  padding: '10px',
                   borderRadius: '5px',
-                  marginBottom: '20px',
+                  marginBottom: '15px',
                   backgroundColor: '#f8d7da',
                   color: '#721c24',
-                  border: '1px solid #f5c6cb'
+                  border: '1px solid #f5c6cb',
+                  fontSize: '13px'
                 }}>
                   {error}
                 </div>
@@ -512,7 +550,7 @@ export default function StatsPage() {
                 disabled={loading}
                 style={{
                   width: '100%',
-                  padding: '15px',
+                  padding: '12px',
                   background: '#007bff',
                   color: 'white',
                   border: 'none',
@@ -527,66 +565,76 @@ export default function StatsPage() {
             </form>
             
             {stats && (
-              <div style={{ marginTop: '30px' }}>
-                <h2 style={{ color: '#333', marginBottom: '20px' }}>통계 결과</h2>
+              <div style={{ marginTop: '25px' }}>
+                <h2 style={{ color: '#333', marginBottom: '15px', fontSize: '16px' }}>통계 결과</h2>
                 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px', marginBottom: '30px' }}>
+                <div style={{ 
+                  display: 'grid', 
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', 
+                  gap: '15px', 
+                  marginBottom: '25px' 
+                }}>
                   <div style={{
-                    padding: '20px',
+                    padding: '15px',
                     background: '#f8f9fa',
                     borderRadius: '5px',
                     textAlign: 'center'
                   }}>
-                    <h3 style={{ color: '#007bff', marginBottom: '10px' }}>총 근무일수</h3>
-                    <p style={{ fontSize: '24px', fontWeight: 'bold' }}>{stats.totalDays}일</p>
+                    <h3 style={{ color: '#007bff', marginBottom: '8px', fontSize: '14px' }}>총 근무일수</h3>
+                    <p style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>{stats.totalDays}일</p>
                   </div>
                   
                   <div style={{
-                    padding: '20px',
+                    padding: '15px',
                     background: '#f8f9fa',
                     borderRadius: '5px',
                     textAlign: 'center'
                   }}>
-                    <h3 style={{ color: '#28a745', marginBottom: '10px' }}>총 근무시간</h3>
-                    <p style={{ fontSize: '24px', fontWeight: 'bold' }}>{stats.totalHours}시간 {stats.totalMinutes % 60}분</p>
+                    <h3 style={{ color: '#28a745', marginBottom: '8px', fontSize: '14px' }}>총 근무시간</h3>
+                    <p style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>{stats.totalHours}시간 {stats.totalMinutes % 60}분</p>
                   </div>
                   
                   <div style={{
-                    padding: '20px',
+                    padding: '15px',
                     background: '#f8f9fa',
                     borderRadius: '5px',
                     textAlign: 'center',
                     gridColumn: 'span 2'
                   }}>
-                    <h3 style={{ color: '#dc3545', marginBottom: '10px' }}>총 급여</h3>
-                    <p style={{ fontSize: '24px', fontWeight: 'bold' }}>{stats.totalWage.toLocaleString()}원</p>
+                    <h3 style={{ color: '#dc3545', marginBottom: '8px', fontSize: '14px' }}>총 급여</h3>
+                    <p style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>{stats.totalWage.toLocaleString()}원</p>
                   </div>
                 </div>
                 
                 {stats.dailyStats.length > 0 && (
                   <div>
-                    <h3 style={{ color: '#333', marginBottom: '15px' }}>일별 상세</h3>
+                    <h3 style={{ color: '#333', marginBottom: '15px', fontSize: '14px' }}>일별 상세</h3>
                     <div style={{
                       border: '1px solid #ddd',
                       borderRadius: '5px',
-                      overflow: 'hidden'
+                      overflow: 'hidden',
+                      overflowX: 'auto'
                     }}>
-                      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                      <table style={{ 
+                        width: '100%', 
+                        borderCollapse: 'collapse',
+                        minWidth: '400px'
+                      }}>
                         <thead>
                           <tr style={{ background: '#f8f9fa' }}>
-                            <th style={{ padding: '12px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>날짜</th>
-                            <th style={{ padding: '12px', textAlign: 'center', borderBottom: '1px solid #ddd' }}>근무시간</th>
-                            <th style={{ padding: '12px', textAlign: 'right', borderBottom: '1px solid #ddd' }}>급여</th>
+                            <th style={{ padding: '10px', textAlign: 'left', borderBottom: '1px solid #ddd', fontSize: '13px' }}>날짜</th>
+                            <th style={{ padding: '10px', textAlign: 'center', borderBottom: '1px solid #ddd', fontSize: '13px' }}>근무시간</th>
+                            <th style={{ padding: '10px', textAlign: 'right', borderBottom: '1px solid #ddd', fontSize: '13px' }}>급여</th>
                           </tr>
                         </thead>
                         <tbody>
                           {stats.dailyStats.map((day: any, index: number) => (
                             <tr key={index} style={{ borderBottom: '1px solid #eee' }}>
-                              <td style={{ padding: '12px' }}>{day.date}</td>
-                              <td style={{ padding: '12px', textAlign: 'center' }}>
+                              <td style={{ padding: '10px', fontSize: '13px' }}>{day.date}</td>
+                              <td style={{ padding: '10px', textAlign: 'center', fontSize: '13px' }}>
                                 {day.hours}시간 {day.minutes}분
                               </td>
-                              <td style={{ padding: '12px', textAlign: 'right' }}>
+                              <td style={{ padding: '10px', textAlign: 'right', fontSize: '13px' }}>
                                 {day.wage.toLocaleString()}원
                               </td>
                             </tr>
@@ -602,12 +650,13 @@ export default function StatsPage() {
         )}
         
         <div style={{ 
-          marginTop: '30px', 
+          marginTop: '25px', 
           textAlign: 'center' 
         }}>
           <a href="/" style={{
             color: '#007bff',
-            textDecoration: 'none'
+            textDecoration: 'none',
+            fontSize: '13px'
           }}>
             ← 메인으로 돌아가기
           </a>

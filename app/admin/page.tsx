@@ -55,6 +55,11 @@ export default function AdminPage() {
     setCheckOutQR('')
   }
 
+  const forceLogout = () => {
+    sessionStorage.removeItem('adminAuthenticated')
+    window.location.reload()
+  }
+
   const generateQR = async (action: 'in' | 'out') => {
     setLoading(true)
     setError('')
@@ -90,21 +95,21 @@ export default function AdminPage() {
         justifyContent: 'center',
         fontFamily: 'Arial, sans-serif',
         backgroundColor: '#f5f5f5',
-        padding: '20px'
+        padding: '15px'
       }}>
         <div style={{
           background: 'white',
-          padding: '30px',
+          padding: '25px',
           borderRadius: '10px',
           boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-          maxWidth: '400px',
+          maxWidth: '350px',
           width: '100%'
         }}>
           <h1 style={{
             color: '#333',
-            marginBottom: '30px',
+            marginBottom: '25px',
             textAlign: 'center',
-            fontSize: '24px'
+            fontSize: '20px'
           }}>
             🔐 관리자 인증
           </h1>
@@ -126,7 +131,7 @@ export default function AdminPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 style={{
                   width: '100%',
-                  padding: '15px',
+                  padding: '12px',
                   border: '1px solid #ddd',
                   borderRadius: '8px',
                   fontSize: '16px',
@@ -140,13 +145,13 @@ export default function AdminPage() {
 
             {authError && (
               <div style={{
-                padding: '12px',
+                padding: '10px',
                 borderRadius: '8px',
-                marginBottom: '20px',
+                marginBottom: '15px',
                 backgroundColor: '#f8d7da',
                 color: '#721c24',
                 border: '1px solid #f5c6cb',
-                fontSize: '14px'
+                fontSize: '13px'
               }}>
                 {authError}
               </div>
@@ -157,7 +162,7 @@ export default function AdminPage() {
               disabled={authLoading}
               style={{
                 width: '100%',
-                padding: '15px',
+                padding: '12px',
                 background: '#007bff',
                 color: 'white',
                 border: 'none',
@@ -173,12 +178,32 @@ export default function AdminPage() {
           </form>
 
           <div style={{
+            textAlign: 'center',
+            marginBottom: '15px'
+          }}>
+            <button
+              onClick={forceLogout}
+              style={{
+                padding: '6px 12px',
+                background: '#6c757d',
+                color: 'white',
+                border: 'none',
+                borderRadius: '5px',
+                fontSize: '11px',
+                cursor: 'pointer'
+              }}
+            >
+              세션 초기화
+            </button>
+          </div>
+
+          <div style={{
             textAlign: 'center'
           }}>
             <a href="/" style={{
               color: '#007bff',
               textDecoration: 'none',
-              fontSize: '14px'
+              fontSize: '13px'
             }}>
               ← 메인으로 돌아가기
             </a>
@@ -192,7 +217,7 @@ export default function AdminPage() {
   return (
     <div style={{
       minHeight: '100vh',
-      padding: '20px',
+      padding: '15px',
       fontFamily: 'Arial, sans-serif',
       backgroundColor: '#f5f5f5'
     }}>
@@ -215,19 +240,19 @@ export default function AdminPage() {
           <h1 style={{
             color: '#333',
             margin: 0,
-            fontSize: '24px'
+            fontSize: '20px'
           }}>
             관리자 페이지
           </h1>
           <button
             onClick={handleLogout}
             style={{
-              padding: '8px 16px',
+              padding: '6px 12px',
               background: '#6c757d',
               color: 'white',
               border: 'none',
               borderRadius: '5px',
-              fontSize: '14px',
+              fontSize: '12px',
               cursor: 'pointer'
             }}
           >
@@ -237,13 +262,13 @@ export default function AdminPage() {
 
         {error && (
           <div style={{
-            padding: '12px',
+            padding: '10px',
             borderRadius: '8px',
-            marginBottom: '20px',
+            marginBottom: '15px',
             backgroundColor: '#f8d7da',
             color: '#721c24',
             border: '1px solid #f5c6cb',
-            fontSize: '14px'
+            fontSize: '13px'
           }}>
             {error}
           </div>
@@ -251,7 +276,7 @@ export default function AdminPage() {
 
         <div style={{ 
           display: 'flex', 
-          gap: '15px', 
+          gap: '10px', 
           marginBottom: '20px',
           flexDirection: 'column'
         }}>
@@ -259,12 +284,12 @@ export default function AdminPage() {
             onClick={() => generateQR('in')}
             disabled={loading}
             style={{
-              padding: '15px',
+              padding: '12px',
               background: '#007bff',
               color: 'white',
               border: 'none',
               borderRadius: '8px',
-              fontSize: '16px',
+              fontSize: '15px',
               cursor: loading ? 'not-allowed' : 'pointer',
               opacity: loading ? 0.6 : 1,
               width: '100%'
@@ -277,12 +302,12 @@ export default function AdminPage() {
             onClick={() => generateQR('out')}
             disabled={loading}
             style={{
-              padding: '15px',
+              padding: '12px',
               background: '#dc3545',
               color: 'white',
               border: 'none',
               borderRadius: '8px',
-              fontSize: '16px',
+              fontSize: '15px',
               cursor: loading ? 'not-allowed' : 'pointer',
               opacity: loading ? 0.6 : 1,
               width: '100%'
@@ -299,9 +324,9 @@ export default function AdminPage() {
         }}>
           <div style={{ textAlign: 'center' }}>
             <h3 style={{ 
-              marginBottom: '15px', 
+              marginBottom: '10px', 
               color: '#007bff',
-              fontSize: '18px'
+              fontSize: '16px'
             }}>출근 QR</h3>
             {checkInQR ? (
               <img
@@ -309,15 +334,15 @@ export default function AdminPage() {
                 alt="출근 QR"
                 style={{
                   maxWidth: '100%',
-                  maxHeight: '300px',
+                  maxHeight: '250px',
                   border: '2px solid #007bff',
                   borderRadius: '8px'
                 }}
               />
             ) : (
               <div style={{
-                width: '250px',
-                height: '250px',
+                width: '200px',
+                height: '200px',
                 border: '2px dashed #ccc',
                 borderRadius: '8px',
                 display: 'flex',
@@ -325,7 +350,7 @@ export default function AdminPage() {
                 justifyContent: 'center',
                 margin: '0 auto',
                 color: '#999',
-                fontSize: '14px'
+                fontSize: '13px'
               }}>
                 QR 코드가 없습니다
               </div>
@@ -334,9 +359,9 @@ export default function AdminPage() {
 
           <div style={{ textAlign: 'center' }}>
             <h3 style={{ 
-              marginBottom: '15px', 
+              marginBottom: '10px', 
               color: '#dc3545',
-              fontSize: '18px'
+              fontSize: '16px'
             }}>퇴근 QR</h3>
             {checkOutQR ? (
               <img
@@ -344,15 +369,15 @@ export default function AdminPage() {
                 alt="퇴근 QR"
                 style={{
                   maxWidth: '100%',
-                  maxHeight: '300px',
+                  maxHeight: '250px',
                   border: '2px solid #dc3545',
                   borderRadius: '8px'
                 }}
               />
             ) : (
               <div style={{
-                width: '250px',
-                height: '250px',
+                width: '200px',
+                height: '200px',
                 border: '2px dashed #ccc',
                 borderRadius: '8px',
                 display: 'flex',
@@ -360,7 +385,7 @@ export default function AdminPage() {
                 justifyContent: 'center',
                 margin: '0 auto',
                 color: '#999',
-                fontSize: '14px'
+                fontSize: '13px'
               }}>
                 QR 코드가 없습니다
               </div>
@@ -369,13 +394,13 @@ export default function AdminPage() {
         </div>
 
         <div style={{
-          marginTop: '30px',
+          marginTop: '20px',
           textAlign: 'center'
         }}>
           <a href="/" style={{
             color: '#007bff',
             textDecoration: 'none',
-            fontSize: '14px'
+            fontSize: '13px'
           }}>
             ← 메인으로 돌아가기
           </a>
