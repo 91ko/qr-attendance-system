@@ -18,6 +18,8 @@ export default function AdminPage() {
     setAuthLoading(true)
     setAuthError('')
     
+    console.log('로그인 시도:', { password: password ? '***' : 'empty' })
+    
     try {
       const response = await fetch('/api/admin/auth', {
         method: 'POST',
@@ -25,13 +27,18 @@ export default function AdminPage() {
         body: JSON.stringify({ password })
       })
       
+      console.log('API 응답 상태:', response.status)
+      
       const data = await response.json()
+      console.log('API 응답 데이터:', data)
       
       if (data.success) {
         setIsAuthenticated(true)
         sessionStorage.setItem('adminAuthenticated', 'true')
+        console.log('로그인 성공!')
       } else {
         setAuthError(data.message || '인증에 실패했습니다.')
+        console.log('로그인 실패:', data.message)
       }
     } catch (error) {
       console.error('인증 오류:', error)
@@ -42,8 +49,19 @@ export default function AdminPage() {
   }
 
   useEffect(() => {
+    // 페이지 로드 시 세션에서 인증 상태 확인
     const authenticated = sessionStorage.getItem('adminAuthenticated') === 'true'
-    setIsAuthenticated(authenticated)
+    console.log('인증 상태 확인:', authenticated)
+    
+    // URL에 ?logout 파라미터가 있으면 강제 로그아웃
+    const urlParams = new URLSearchParams(window.location.search)
+    if (urlParams.get('logout') === 'true') {
+      sessionStorage.removeItem('adminAuthenticated')
+      setIsAuthenticated(false)
+      console.log('강제 로그아웃 실행')
+    } else {
+      setIsAuthenticated(authenticated)
+    }
   }, [])
 
   const handleLogout = () => {
@@ -184,17 +202,35 @@ export default function AdminPage() {
             <button
               onClick={forceLogout}
               style={{
+                padding: '8px 16px',
+                background: '#dc3545',
+                color: 'white',
+                border: 'none',
+                borderRadius: '5px',
+                fontSize: '12px',
+                cursor: 'pointer',
+                marginBottom: '10px'
+              }}
+            >
+              🔄 세션 초기화
+            </button>
+            <br />
+            <a 
+              href="/admin?logout=true" 
+              style={{
                 padding: '6px 12px',
                 background: '#6c757d',
                 color: 'white',
                 border: 'none',
                 borderRadius: '5px',
                 fontSize: '11px',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                textDecoration: 'none',
+                display: 'inline-block'
               }}
             >
-              세션 초기화
-            </button>
+              강제 로그아웃
+            </a>
           </div>
 
           <div style={{
