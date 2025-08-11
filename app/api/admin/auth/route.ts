@@ -11,8 +11,8 @@ export async function POST(request: NextRequest) {
       }, { status: 400 })
     }
 
-    // 환경변수에서 관리자 비밀번호 가져오기 (기본값: admin1234)
-    const adminPassword = process.env.ADMIN_PASSWORD || 'admin1234'
+    // 환경변수에서 관리자 비밀번호 가져오기 (기본값: 복잡한 비밀번호)
+    const adminPassword = process.env.ADMIN_PASSWORD || 'Admin@2024!'
 
     if (password === adminPassword) {
       return NextResponse.json({

@@ -253,19 +253,6 @@ export default function CheckinPage() {
             {loading ? '처리 중...' : (action === 'in' ? '출근하기' : '퇴근하기')}
           </button>
         </form>
-
-        <div style={{
-          marginTop: '30px',
-          textAlign: 'center'
-        }}>
-          <a href="/" style={{
-            color: '#007bff',
-            textDecoration: 'none',
-            fontSize: '14px'
-          }}>
-            ← 메인으로 돌아가기
-          </a>
-        </div>
       </div>
     </div>
   )
