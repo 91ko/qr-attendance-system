@@ -15,6 +15,7 @@ export default function StatsPage() {
   const [attendanceSessions, setAttendanceSessions] = useState<any[]>([])
   const [selectedDate, setSelectedDate] = useState('')
   const [viewMode, setViewMode] = useState<'dashboard' | 'search'>('dashboard')
+  const [deletingSession, setDeletingSession] = useState<string | null>(null)
 
   // 현재 년월과 오늘 날짜를 기본값으로 설정
   useEffect(() => {
@@ -39,6 +40,35 @@ export default function StatsPage() {
       }
     } catch (error) {
       console.error('대시보드 데이터 로드 오류:', error)
+    }
+  }
+
+  const handleDeleteSession = async (employeeId: string, employeeName: string) => {
+    if (!confirm(`"${employeeName}"의 오늘 출퇴근 기록을 삭제하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다.`)) {
+      return
+    }
+
+    setDeletingSession(employeeId)
+    
+    try {
+      const response = await fetch(`/api/attendance/delete?employee_id=${employeeId}&date=${selectedDate}`, {
+        method: 'DELETE'
+      })
+      
+      const data = await response.json()
+      
+      if (data.success) {
+        // 대시보드 데이터 새로고침
+        await loadDashboardData(selectedDate)
+        alert('출퇴근 기록이 삭제되었습니다.')
+      } else {
+        alert(data.message || '삭제에 실패했습니다.')
+      }
+    } catch (error) {
+      console.error('삭제 오류:', error)
+      alert('서버 오류가 발생했습니다.')
+    } finally {
+      setDeletingSession(null)
     }
   }
 
@@ -274,6 +304,7 @@ export default function StatsPage() {
                       <th style={{ padding: '12px', textAlign: 'center', borderBottom: '1px solid #ddd' }}>근무시간</th>
                       <th style={{ padding: '12px', textAlign: 'right', borderBottom: '1px solid #ddd' }}>급여</th>
                       <th style={{ padding: '12px', textAlign: 'center', borderBottom: '1px solid #ddd' }}>상태</th>
+                      <th style={{ padding: '12px', textAlign: 'center', borderBottom: '1px solid #ddd' }}>관리</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -312,11 +343,29 @@ export default function StatsPage() {
                           }}>
                             {getStatusText(session)}
                           </td>
+                          <td style={{ padding: '12px', textAlign: 'center' }}>
+                            <button
+                              onClick={() => handleDeleteSession(session.employee_id, session.name)}
+                              disabled={deletingSession === session.employee_id}
+                              style={{
+                                padding: '6px 12px',
+                                background: '#dc3545',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '3px',
+                                fontSize: '12px',
+                                cursor: deletingSession === session.employee_id ? 'not-allowed' : 'pointer',
+                                opacity: deletingSession === session.employee_id ? 0.6 : 1
+                              }}
+                            >
+                              {deletingSession === session.employee_id ? '삭제 중...' : '삭제'}
+                            </button>
+                          </td>
                         </tr>
                       ))
                     ) : (
                       <tr>
-                        <td colSpan={6} style={{ padding: '20px', textAlign: 'center', color: '#666' }}>
+                        <td colSpan={7} style={{ padding: '20px', textAlign: 'center', color: '#666' }}>
                           오늘의 출퇴근 기록이 없습니다.
                         </td>
                       </tr>
