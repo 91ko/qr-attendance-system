@@ -17,6 +17,12 @@ export default function StatsPage() {
   const [viewMode, setViewMode] = useState<'dashboard' | 'search'>('dashboard')
   const [deletingSession, setDeletingSession] = useState<string | null>(null)
 
+  // 관리자 인증 상태
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [password, setPassword] = useState('')
+  const [authError, setAuthError] = useState('')
+  const [authLoading, setAuthLoading] = useState(false)
+
   // 현재 년월과 오늘 날짜를 기본값으로 설정
   useEffect(() => {
     const now = new Date()
@@ -25,9 +31,67 @@ export default function StatsPage() {
     setYearMonth(currentYearMonth)
     setSelectedDate(currentDate)
     
-    // 대시보드 데이터 로드
-    loadDashboardData(currentDate)
+    // 관리자 인증 상태 확인
+    const authenticated = sessionStorage.getItem('adminAuthenticated') === 'true'
+    setIsAuthenticated(authenticated)
+    
+    if (authenticated) {
+      // 대시보드 데이터 로드
+      loadDashboardData(currentDate)
+    }
   }, [])
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setAuthLoading(true)
+    setAuthError('')
+    
+    console.log('통계 페이지 로그인 시도:', { password: password ? '***' : 'empty' })
+    
+    try {
+      const response = await fetch('/api/admin/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password })
+      })
+      
+      console.log('API 응답 상태:', response.status)
+      
+      const data = await response.json()
+      console.log('API 응답 데이터:', data)
+      
+      if (data.success) {
+        setIsAuthenticated(true)
+        sessionStorage.setItem('adminAuthenticated', 'true')
+        console.log('통계 페이지 로그인 성공!')
+        
+        // 로그인 성공 후 대시보드 데이터 로드
+        loadDashboardData(selectedDate)
+      } else {
+        setAuthError(data.message || '인증에 실패했습니다.')
+        console.log('통계 페이지 로그인 실패:', data.message)
+      }
+    } catch (error) {
+      console.error('인증 오류:', error)
+      setAuthError('서버 오류가 발생했습니다.')
+    } finally {
+      setAuthLoading(false)
+    }
+  }
+
+  const handleLogout = () => {
+    setIsAuthenticated(false)
+    setPassword('')
+    setAuthError('')
+    sessionStorage.removeItem('adminAuthenticated')
+    setStats(null)
+    setAttendanceSessions([])
+  }
+
+  const forceLogout = () => {
+    sessionStorage.removeItem('adminAuthenticated')
+    window.location.reload()
+  }
 
   const loadDashboardData = async (date: string) => {
     try {
@@ -185,6 +249,143 @@ export default function StatsPage() {
     return sum + (session.wage || 0)
   }, 0)
 
+  // 인증되지 않은 경우 로그인 화면 표시
+  if (!isAuthenticated) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontFamily: 'Arial, sans-serif',
+        backgroundColor: '#f5f5f5',
+        padding: '15px'
+      }}>
+        <div style={{
+          background: 'white',
+          padding: '25px',
+          borderRadius: '10px',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          maxWidth: '350px',
+          width: '100%'
+        }}>
+          <h1 style={{
+            color: '#333',
+            marginBottom: '25px',
+            textAlign: 'center',
+            fontSize: '20px'
+          }}>
+            🔐 관리자 인증 필요
+          </h1>
+
+          <p style={{
+            color: '#666',
+            marginBottom: '20px',
+            textAlign: 'center',
+            fontSize: '14px'
+          }}>
+            통계 페이지에 접근하려면 관리자 인증이 필요합니다.
+          </p>
+
+          <form onSubmit={handleLogin}>
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{
+                display: 'block',
+                marginBottom: '8px',
+                color: '#333',
+                fontWeight: 'bold',
+                fontSize: '14px'
+              }}>
+                관리자 비밀번호
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  border: '1px solid #ddd',
+                  borderRadius: '8px',
+                  fontSize: '16px',
+                  boxSizing: 'border-box'
+                }}
+                placeholder="비밀번호를 입력하세요"
+                required
+                disabled={authLoading}
+              />
+            </div>
+
+            {authError && (
+              <div style={{
+                padding: '10px',
+                borderRadius: '8px',
+                marginBottom: '15px',
+                backgroundColor: '#f8d7da',
+                color: '#721c24',
+                border: '1px solid #f5c6cb',
+                fontSize: '13px'
+              }}>
+                {authError}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={authLoading}
+              style={{
+                width: '100%',
+                padding: '12px',
+                background: '#007bff',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                fontSize: '16px',
+                cursor: authLoading ? 'not-allowed' : 'pointer',
+                marginBottom: '15px',
+                opacity: authLoading ? 0.6 : 1
+              }}
+            >
+              {authLoading ? '인증 중...' : '로그인'}
+            </button>
+          </form>
+
+          <div style={{
+            textAlign: 'center',
+            marginBottom: '15px'
+          }}>
+            <button
+              onClick={forceLogout}
+              style={{
+                padding: '6px 12px',
+                background: '#6c757d',
+                color: 'white',
+                border: 'none',
+                borderRadius: '5px',
+                fontSize: '11px',
+                cursor: 'pointer'
+              }}
+            >
+              세션 초기화
+            </button>
+          </div>
+
+          <div style={{
+            textAlign: 'center'
+          }}>
+            <a href="/" style={{
+              color: '#007bff',
+              textDecoration: 'none',
+              fontSize: '13px'
+            }}>
+              ← 메인으로 돌아가기
+            </a>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div style={{ 
       minHeight: '100vh', 
@@ -200,14 +401,36 @@ export default function StatsPage() {
         borderRadius: '10px',
         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
       }}>
-        <h1 style={{ 
-          color: '#333', 
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
           marginBottom: '25px',
-          textAlign: 'center',
-          fontSize: '20px'
+          flexWrap: 'wrap',
+          gap: '10px'
         }}>
-          근무 통계 대시보드
-        </h1>
+          <h1 style={{ 
+            color: '#333', 
+            margin: 0,
+            fontSize: '20px'
+          }}>
+            근무 통계 대시보드
+          </h1>
+          <button
+            onClick={handleLogout}
+            style={{
+              padding: '6px 12px',
+              background: '#6c757d',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              fontSize: '12px',
+              cursor: 'pointer'
+            }}
+          >
+            로그아웃
+          </button>
+        </div>
         
         {/* 뷰 모드 선택 */}
         <div style={{ marginBottom: '20px', textAlign: 'center' }}>
